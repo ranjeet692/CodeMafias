@@ -75,12 +75,12 @@
 					<div role="tabpanel" class="tab-pane fade" id="syllabus">
 						<h2>Syllabus</h2>
 						<hr/>
-						<h4>Content</h4>
-						<h4>Timeline</h4>
+						<p id="timeline">Timeline</p>
 					</div>
 					<div role="tabpanel" class="tab-pane fade" id="documents">
 						<h2>Documents</h2>
 						<hr/>
+						<p id="useful_links"></p>
 					</div>
 					<div role="tabpanel" class="tab-pane fade" id="assignment">
 						<h2>Assignment</h2>
@@ -180,5 +180,35 @@
 		<script src="./js/jquery.js"></script>
 		<!-- Optional: Incorporate the Bootstrap JavaScript plugins -->
 		<script src="./js/bootstrap.min.js"></script>
+		<!-- AJAX code-->
+		<script>
+			var output = "";
+			$.ajax({
+					type: 'POST',
+					url: "class_ajax.py",
+					data: ({classid:"1", field:"timeline"}), //passing classid
+					dataType: "text",
+					success: function(response){
+						output = response;
+						$("#timeline").html(output);
+						}
+					}).done(function(data){
+						console.log(data);
+						
+				});
+				$.ajax({
+					type: 'POST',
+					url: "class_ajax.py",
+					data: ({classid:"1", field:"useful_links"}), //passing classid
+					dataType: "text",
+					success: function(response){
+						output = response;
+						$("#useful_links").html(output);
+						}
+					}).done(function(data){
+						console.log(data);
+						
+				});
+		</script>
 	</body>
 </html>	
