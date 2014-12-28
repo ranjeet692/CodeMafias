@@ -121,55 +121,119 @@
 						<hr/>
 						<h3>List of student for teacher</h3>
 						<h3>List of score/remarks for every test/assignment</h3>
-					</div>
+					</div>	
+					<!-- Feedback Page -->	
 					<div role="tabpanel" class="tab-pane fade" id="feedback">
 						<h2>Feedback</h2>
 						<hr/>
-						<div class="panel panel-default">
-			<div class="panel-body">
-				<strong>1.Question ?</strong>
-			</div>
-			<div class="panel-footer">
-				<div class="radio">
-					<label>
-						<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
-							Option 1
-					</label>
-				</div>
-				<div class="radio">
-					<label>
-						<input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
-							Option 2
-					</label>
-				</div>
-				<div class="radio">
-					<label>
-						<input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" checked>
-							Option 3
-					</label>
-				</div>
-				<div class="radio">
-					<label>
-						<input type="radio" name="optionsRadios" id="optionsRadios4" value="option4">
-							Option 4
-					</label>
-				</div>
-			</div>
-		</div>
-		<div class="panel panel-default">
-			<div class="panel-body">
-				<strong>Comment </strong>
-			</div>
-			<div class="panel-footer">
-				<textarea class="form-control" rows="3"></textarea>
-			</div>
-		</div>	
-		<div class="panel panel-default">
-			<div class="panel-body">
-				<button type="submit" class="btn btn-warning">Submit</button>
-			</div>
-		</div>
+						<center><h3 id="feedbackBox"></h3></center>
+						<form action="/" method="POST" id="feedbackForm">
+						<div class="panel panel-default feedback_panel">
+							<div class="panel-body">
+								<strong>1. Question ?</strong>
+							</div>
+							<div class="panel-footer">
+								<div class="radio">
+									<label>
+										<input type="radio" name="q1Radios" id="q1Radios1" value="option1" checked>
+										Option 1
+									</label>
+								</div>
+								<div class="radio">
+									<label>
+										<input type="radio" name="q1Radios" id="q1Radios2" value="option2">
+										Option 2
+									</label>
+								</div>
+								<div class="radio">
+									<label>
+										<input type="radio" name="q1Radios" id="q1Radios3" value="option3">
+										Option 3
+									</label>
+								</div>
+								<div class="radio">
+									<label>
+										<input type="radio" name="q1Radios" id="q1Radios4" value="option4">
+										Option 4
+									</label>
+								</div>
+							</div>
+							<div class="panel-body">
+								<strong>2. Question ?</strong>
+							</div>
+							<div class="panel-footer">
+								<div class="radio">
+									<label>
+										<input type="radio" name="q2Radios" id="q2Radios1" value="option1" checked>
+										Option 1
+									</label>
+								</div>
+								<div class="radio">
+									<label>
+										<input type="radio" name="q2Radios" id="q2Radios2" value="option2">
+										Option 2		
+									</label>
+								</div>	
+								<div class="radio">
+									<label>
+										<input type="radio" name="q2Radios" id="q2Radios3" value="option3">
+										Option 3
+									</label>
+								</div>
+								<div class="radio">
+									<label>
+										<input type="radio" name="q2Radios" id="q2Radios4" value="option4">
+										Option 4
+									</label>
+								</div>
+							</div>
+							<div class="panel-body">
+								<strong>3. Question ?</strong>
+							</div>
+							<div class="panel-footer">
+								<div class="radio">
+									<label>
+										<input type="radio" name="q3Radios" id="q3Radios1" value="option1" checked>
+											Option 1
+									</label>
+								</div>
+								<div class="radio">
+									<label>
+										<input type="radio" name="q3Radios" id="q3Radios2" value="option2">
+										Option 2
+									</label>
+								</div>
+								<div class="radio">
+									<label>
+										<input type="radio" name="q3Radios" id="q3Radios3" value="option3" >
+										Option 3
+									</label>
+								</div>
+								<div class="radio">
+									<label>
+										<input type="radio" name="q3Radios" id="q3Radios4" value="option4">
+										Option 4
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="panel panel-default feedback_panel">
+							<div class="panel-body">
+								<strong>Comment </strong>
+							</div>
+						<div class="panel-footer">
+							<textarea class="form-control" name="commentbox" rows="3"></textarea>
+						</div>
+					</div>	
+					<div class="panel panel-default feedback_panel">
+						<div class="panel-body">
+							<button type="submit" class="btn btn-warning">Submit</button>
+						</div>
 					</div>
+						<input type="hidden" name="classid" value="1"/>
+						<input type="hidden" name="studentid" value="1"/>
+					</form>
+				</div>
 				</div>
 				<!--tab-panes-->
 			</div>
@@ -199,7 +263,7 @@
 				$.ajax({
 					type: 'POST',
 					url: "class_ajax.py",
-					data: ({classid:"1", field:"useful_links"}), //passing classid
+					data: ({classid:"1", field:"useful_links"}), // passing classid
 					dataType: "text",
 					success: function(response){
 						output = response;
@@ -209,6 +273,21 @@
 						console.log(data);
 						
 				});
+				$("#feedbackForm").submit(function() {
+					$.ajax({
+						type: "POST",
+						url: "feedback_ajax.py",
+						data: $("#feedbackForm").serialize(), // serializes the form's elements.
+						success: function(response)
+						{
+							alert(response)
+							$(".feedback_panel").hide(); 
+							$("#feedbackBox").html("Thanks for your feedback!!")
+						}
+					});
+					return false; // avoid to execute the actual submit of the form.
+				});
+				
 		</script>
 	</body>
 </html>	
