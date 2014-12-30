@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>{{ title }} | CodeMafias</title>
+		<meta charset="utf-8"> 
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="./css/bootstrap.min.css">
+		<link href="font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	</head>
+	<body>
+		 <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Code Mafia</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="about.html">Home</a>
+                    </li>
+                    <li>
+                        <a href="services.html">Profile</a>
+                    </li>
+                    <li>
+                        <a href="contact.html">Courses</a>
+                    </li>                 
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Ranjeet <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>
+								<a href="#">Edit Profile</a>
+                            </li>
+                            <li>
+                                <a href="#">Log Out</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+    <div class="container">
+		<div class="container-fluid">
+			<h2>{{ title }}</h2>
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<p>{{ description }}</p>
+				</div>
+			</div>
+			<form enctype="multipart/form-data" action="" method="post" id="submitform">
+			<div class="panel panel-default">
+				<div class="panel-heading">Solution</div>
+				<div class="panel-body">
+					<input type="file" name="file"/>
+					<select>
+						<option>Java</option>
+						<option>C</option>
+						<option>C++</option>
+					</select>	
+					<input type="submit" value="Submit"/>
+				</div>
+			</div>
+			</form>
+			<center><p id="loading"><img src="loading_bar.gif" width="150" height="25"/></p></center>
+			<div class="alert alert-danger" role="alert" id="alert">
+  						<strong>Error occured while processing. please try again.</strong>
+			</div>
+			<div class="panel panel-default" id="testcase">
+ 				 <!-- Default panel contents -->
+  				<div class="panel-heading">Test Cases</div>
+				<div class="panel-body">
+				  <!-- Table -->
+  					<table class="table">
+   					 	<tr>
+   					 		<th>#</th><th>Time</th><th>Memory</th><th>Result</th>
+   					 	<tr/>
+   					 	<tr>
+   					 		<td>1</td><td>Time</td><td>Memory</td><td>Result</td>
+   					 	<tr/>
+   					 	<tr>
+   					 		<td>2</td><td>Time</td><td>Memory</td><td>Result</td>
+   					 	<tr/>
+ 					 </table>
+				</div>
+			</div>
+			<div class="panel panel-default" id="result"> 
+ 				 <!-- Default panel contents -->
+  				<div class="panel-heading">Result</div>
+				<div class="panel-body">
+					
+				</div>
+			</div>		
+		</div>
+		<!-- container -->
+		<!-- Optional: Include the jQuery library -->
+		<script src="./js/jquery.js"></script>
+		<!-- Optional: Incorporate the Bootstrap JavaScript plugins -->
+		<script src="./js/bootstrap.min.js"></script>
+		<script>
+			$( document ).ready(function() {
+					$("#loading").hide();
+					$("#testcase").hide();
+					$("#result").hide();
+					$("#alert").hide();
+					
+			});
+ 
+			// Catch the form submit and upload the files
+			$("#submitform").submit(function(e) {
+				
+				$("#loading").show();
+				e.preventDefault();
+				var form_data = new FormData($("#submitform")[0]);
+ 				$.ajax({
+					url: 'ajax/submission_code.py',
+					type: 'POST',
+					data:  form_data,
+					cache: false,
+					processData: false,
+					async: false,
+					success: function(response)
+					{
+						$("#loading").hide();
+						$("#testcase").show();
+					},
+					error:function(response){
+						$("#alert").show();						
+					},
+					
+				});
+				$("#loading").hide();
+					return false;
+			}); 
+		</script>
+	</body>
+</html>	
