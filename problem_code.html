@@ -57,17 +57,17 @@
 					<p>{{ description }}</p>
 				</div>
 			</div>
-			<form enctype="multipart/form-data" action="" method="post" id="submitform">
+			<form enctype="multipart/form-data" action="submission_code.py" method="post" id="submitform">
 			<div class="panel panel-default">
 				<div class="panel-heading">Solution</div>
 				<div class="panel-body">
-					<input type="file" name="file"/>
+					<input type="file" name="file" id="file"/>
 					<select>
 						<option>Java</option>
 						<option>C</option>
 						<option>C++</option>
 					</select>	
-					<input type="submit" value="Submit"/>
+					<input type="submit" name="submit" value="Submit"/>
 				</div>
 			</div>
 			</form>
@@ -75,29 +75,15 @@
 			<div class="alert alert-danger" role="alert" id="alert">
   						<strong>Error occured while processing. please try again.</strong>
 			</div>
+			
 			<div class="panel panel-default" id="testcase">
  				 <!-- Default panel contents -->
-  				<div class="panel-heading">Test Cases</div>
-				<div class="panel-body">
-				  <!-- Table -->
-  					<table class="table">
-   					 	<tr>
-   					 		<th>#</th><th>Time</th><th>Memory</th><th>Result</th>
-   					 	<tr/>
-   					 	<tr>
-   					 		<td>1</td><td>Time</td><td>Memory</td><td>Result</td>
-   					 	<tr/>
-   					 	<tr>
-   					 		<td>2</td><td>Time</td><td>Memory</td><td>Result</td>
-   					 	<tr/>
- 					 </table>
-				</div>
+  				
 			</div>
 			<div class="panel panel-default" id="result"> 
  				 <!-- Default panel contents -->
   				<div class="panel-heading">Result</div>
 				<div class="panel-body">
-					
 				</div>
 			</div>		
 		</div>
@@ -114,6 +100,7 @@
 					$("#alert").hide();
 					
 			});
+				
  
 			// Catch the form submit and upload the files
 			$("#submitform").submit(function(e) {
@@ -121,17 +108,23 @@
 				$("#loading").show();
 				e.preventDefault();
 				var form_data = new FormData($("#submitform")[0]);
+				
  				$.ajax({
-					url: 'ajax/submission_code.py',
+					url: 'submission_code.py',
 					type: 'POST',
-					data:  form_data,
-					cache: false,
-					processData: false,
-					async: false,
+					data: form_data,
+        			contentType: false,
+        			cache: false,
+        			processData: false,
+        			async: false,
 					success: function(response)
 					{
+						
 						$("#loading").hide();
+						$("#testcase").html(response);
 						$("#testcase").show();
+						
+						 console.log('Success!');
 					},
 					error:function(response){
 						$("#alert").show();						
@@ -141,6 +134,7 @@
 				$("#loading").hide();
 					return false;
 			}); 
+			
 		</script>
 	</body>
 </html>	
